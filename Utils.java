@@ -26,17 +26,12 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 
 public class Utils {
-    private final DcMotor leftMotor;
-    private final DcMotor rightMotor;
-    private double leftPower = 0;
-    private double rightPower = 0;
     private final Telemetry telemetry;
     private final HardwareMap hardwareMap;
     private final Map<DcMotor, Double> powers = new HashMap<>();
+    private final Map<DcMotor, Double> targetPowers = new HashMap<>();
     
     public Utils(HardwareMap hardwareMap, Telemetry telemetry) {
-        leftMotor = hardwareMap.get(DcMotor.class, "leftMotor");
-        rightMotor = hardwareMap.get(DcMotor.class, "rightMotor");
         this.hardwareMap = hardwareMap;
         this.telemetry = telemetry;
     }
@@ -56,7 +51,7 @@ public class Utils {
     
     // false if left motor, true if right motor
     public double getPower(boolean right) {
-        return right?rightPower:leftPower; 
+        return powers.containsKey(right?); 
     }
     
     public double getPower(DcMotor motor) {
@@ -65,7 +60,8 @@ public class Utils {
     }
     
     public DcMotor getMotor(boolean right) {
-        return right?rightMotor:leftMotor;
+        return right?hardwareMap.get(DcMotor.class, "rightMotor"):
+        hardwareMap.get(DcMotor.class, "leftMotor");
     }
     
     public DcMotor getMotor(String motor) {
@@ -77,8 +73,19 @@ public class Utils {
     }
     
     public void setMotor(DcMotor motor, double power) {
+        if (!powers.containsKey(motor)) powers.put(motor, 0);
         power = Math.max(-1, Math.min(1, power));
+        if (power == powers.get(motor)) return; 
         motor.setPower(power);
         powers.put(motor, power);
+    }
+
+    public void setTargetPower(DcMotor motor, double power) {
+        power = Math.max(-1, Math.min(1, power));
+        targetPowers.put(motor, power);
+    }
+
+    public void updatePower(DcMotor motor, double speed) {
+
     }
 }

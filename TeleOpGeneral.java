@@ -36,6 +36,7 @@ public class TeleOpGeneral {
         boolean intakerunning = false;
         CRServo windmill = opmode.hardwareMap.get(CRServo.class, "windmill");
         utils.getMotor(true).setDirection(DcMotor.Direction.REVERSE);
+        utils.setMotor(utils.getMotor("flybackMotor"), 1);
         
         while (opmode.opModeIsActive()) {
             
@@ -53,7 +54,7 @@ public class TeleOpGeneral {
                 squarestate = true;
                 intakerunning = !intakerunning;
                 utils.setMotor(utils.getMotor("intakeMotor"), intakerunning?1:0);
-                windmill.setPower(1);
+                windmill.setPower(intakerunning?-1:0);
             }
             
             // reset values
@@ -61,24 +62,26 @@ public class TeleOpGeneral {
             if (!gamepad1.dpad_down&&dpaddownstate) dpaddownstate = false;
             if (!gamepad1.square&&squarestate) squarestate = false;
             
-            double leftPower = 0;
-            double rightPower = 0;
-            double maxPower = 0;
+            {
+                double leftPower = 0;
+                double rightPower = 0;
+                double maxPower = 0;
             
-            // values from drive and turn
-            leftPower = -gamepad1.left_stick_y + gamepad1.right_stick_x;
-            rightPower = -gamepad1.left_stick_y - gamepad1.right_stick_x;
+                // values from drive and turn
+                leftPower = -gamepad1.left_stick_y + gamepad1.right_stick_x;
+                rightPower = -gamepad1.left_stick_y - gamepad1.right_stick_x;
             
-            // normalization, makes the maximum value 1 while keeping the same motor ratio
-            maxPower = Math.max(1, Math.max(Math.abs(leftPower), Math.abs(rightPower)));
-            leftPower /= maxPower;
-            rightPower /= maxPower;
+                // normalization, makes the maximum value 1 while keeping the same motor ratio
+                maxPower = Math.max(1, Math.max(Math.abs(leftPower), Math.abs(rightPower)));
+                leftPower /= maxPower;
+                rightPower /= maxPower;
             
-            // multiply by speed
-            leftPower *= speed;
-            rightPower *= speed;
+                // multiply by speed
+                leftPower *= speed;
+                rightPower *= speed;
             
-            utils.setMotors(leftPower, rightPower);
+                utils.setMotors(leftPower, rightPower);
+            }
             
             utils.print(String.format("Motors: %.2f, %.2f\nSpeed: %.1f\nIntake is%s running.",
             utils.getPower(false), utils.getPower(true), speed, intakerunning?"":" not"));
