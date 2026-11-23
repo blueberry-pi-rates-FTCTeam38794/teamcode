@@ -30,6 +30,7 @@ public class Utils {
     private final HardwareMap hardwareMap;
     private final Map<DcMotor, Double> powers = new HashMap<>();
     private final Map<DcMotor, Double> targetPowers = new HashMap<>();
+    private final Map<String, DcMotor> motorCache = new HashMap<>();
     
     public Utils(HardwareMap hardwareMap, Telemetry telemetry) {
         this.hardwareMap = hardwareMap;
@@ -37,21 +38,13 @@ public class Utils {
     }
     
     public void setMotors(double left, double right) {
-        if (leftPower == left && rightPower == right) return;
-        
-        left = Math.max(-1, Math.min(left, 1));
-        right = Math.max(-1, Math.min(right, 1));
-        
-        leftMotor.setPower(left);
-        rightMotor.setPower(right);
-        
-        leftPower = left;
-        rightPower = right;
+        setMotor(getMotor(false), left);
+        setMotor(getMotor(true), right);
     }
     
     // false if left motor, true if right motor
     public double getPower(boolean right) {
-        return powers.containsKey(right?); 
+        return getPower(getMotor(right)); 
     }
     
     public double getPower(DcMotor motor) {
@@ -60,12 +53,13 @@ public class Utils {
     }
     
     public DcMotor getMotor(boolean right) {
-        return right?hardwareMap.get(DcMotor.class, "rightMotor"):
-        hardwareMap.get(DcMotor.class, "leftMotor");
+        return right?getMotor("rightMotor"):getMotor("leftMotor");
     }
     
     public DcMotor getMotor(String motor) {
-        return hardwareMap.get(DcMotor.class, motor);
+        if (!motorCache.containsKey(motor))
+            motorCache.put(motor, hardwareMap.get(DcMotor.class, motor));
+        return motorCache.get(motor);
     }
     
     public void print(String string) {
@@ -86,6 +80,6 @@ public class Utils {
     }
 
     public void updatePower(DcMotor motor, double speed) {
-
+        
     }
 }

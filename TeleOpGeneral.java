@@ -36,7 +36,6 @@ public class TeleOpGeneral {
         boolean intakerunning = false;
         CRServo windmill = opmode.hardwareMap.get(CRServo.class, "windmill");
         utils.getMotor(true).setDirection(DcMotor.Direction.REVERSE);
-        utils.setMotor(utils.getMotor("flybackMotor"), 1);
         
         while (opmode.opModeIsActive()) {
             
@@ -54,6 +53,7 @@ public class TeleOpGeneral {
                 squarestate = true;
                 intakerunning = !intakerunning;
                 utils.setMotor(utils.getMotor("intakeMotor"), intakerunning?1:0);
+                utils.setMotor(utils.getMotor("flybackMotor"), intakerunning?1:0);
                 windmill.setPower(intakerunning?-1:0);
             }
             
