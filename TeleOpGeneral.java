@@ -52,8 +52,8 @@ public class TeleOpGeneral {
             if (gamepad2.square&&!squarestate) {
                 squarestate = true;
                 intakerunning = !intakerunning;
-                utils.setMotor(utils.getMotor("intakeMotor"), intakerunning?1:0);
-                utils.setMotor(utils.getMotor("flybackMotor"), intakerunning?1:0);
+                utils.setPower(utils.getMotor("intakeMotor"), intakerunning?1:0);
+                utils.setPower(utils.getMotor("flybackMotor"), intakerunning?1:0);
                 windmill.setPower(intakerunning?-1:0);
             }
             
@@ -80,11 +80,14 @@ public class TeleOpGeneral {
                 leftPower *= speed;
                 rightPower *= speed;
             
-                utils.setMotors(leftPower, rightPower);
+                utils.setTargetPower(utils.getMotor(false), leftPower);
+                utils.setTargetPower(utils.getMotor(true), rightPower);
             }
             
             utils.print(String.format("Motors: %.2f, %.2f\nSpeed: %.1f\nIntake is%s running.",
             utils.getPower(false), utils.getPower(true), speed, intakerunning?"":" not"));
+            utils.updatePower(getMotor(false), 0.1);
+            utils.updatePower(getMotor(true), 0.1);
             opmode.telemetry.update();
         }
     }

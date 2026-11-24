@@ -38,8 +38,8 @@ public class Utils {
     }
     
     public void setMotors(double left, double right) {
-        setMotor(getMotor(false), left);
-        setMotor(getMotor(true), right);
+        setPower(getMotor(false), left);
+        setPower(getMotor(true), right);
     }
     
     // false if left motor, true if right motor
@@ -66,10 +66,10 @@ public class Utils {
         telemetry.addLine(string);
     }
     
-    public void setMotor(DcMotor motor, double power) {
+    public void setPower(DcMotor motor, double power) {
         if (!powers.containsKey(motor)) powers.put(motor, 0);
         power = Math.max(-1, Math.min(1, power));
-        if (power == powers.get(motor)) return; 
+        if (isClose(power, powers.get(motor))) return; 
         motor.setPower(power);
         powers.put(motor, power);
     }
@@ -79,7 +79,32 @@ public class Utils {
         targetPowers.put(motor, power);
     }
 
+    public boolean getTargetPower(DcMotor motor) {
+        return targetPowers.containsKey(motor)?targetPowers.get(motor):0;
+    }
+
+    public void removeTargetPower(DcMotor motor) {
+        targetPowers.remove(motor);
+    }
+
     public void updatePower(DcMotor motor, double speed) {
-        
+        if (!targetPowers.containsKey(motor)) return;
+
+        double target = targetPowers.get(motor);
+        if (isClose(getPower(motor), target)) return;
+
+        if (Math.abs(getPower(motor) - target) <= speed) {
+            setPower(motor, target);
+            return;
+        }
+
+        setPower(motor, getPower(motor)+(getPower(motor)<target?speed:-speed));
+    }
+
+
+
+    // static utilities
+    public static boolean isClose(double a, double b) { // for floating point inaccuracies
+        return Math.abs(a-b) < 0.00001;
     }
 }
