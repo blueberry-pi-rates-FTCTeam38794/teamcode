@@ -73,6 +73,7 @@ public class BlockUtils extends BlocksOpModeCompanion {
     parameterLabels={"motor"})
     public static void removeTargetPower(DcMotor motor) {init();utils.removeTargetPower(motor);}
 
-    @ExportToBlocks(comment="Makes the motor's power value slowly go towards the motor's target power at a given speed. The speed must be positive. This also won't work correctly if you have changed the motor's power without BlockUtils before.")
+    @ExportToBlocks(comment="Makes the motor's power value slowly go towards the motor's target power at a given speed. The speed must be positive. This also won't work correctly if you have changed the motor's power without BlockUtils before.",
+    parameterLabels={"motor", "speed"})
     public static void updatePower(DcMotor motor, double speed) {init();utils.updatePower(motor, speed);}
 }
