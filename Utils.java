@@ -79,7 +79,7 @@ public class Utils {
         targetPowers.put(motor, power);
     }
 
-    public boolean getTargetPower(DcMotor motor) {
+    public double getTargetPower(DcMotor motor) {
         return targetPowers.containsKey(motor)?targetPowers.get(motor):0;
     }
 
