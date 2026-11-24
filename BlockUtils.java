@@ -67,7 +67,7 @@ public class BlockUtils extends BlocksOpModeCompanion {
 
     @ExportToBlocks(comment="Gets the target power of a motor.",
     parameterLabels={"motor"})
-    public static void getTargetPower(DcMotor motor) {init();utils.getTargetPower(motor);}
+    public static double getTargetPower(DcMotor motor) {init();utils.getTargetPower(motor);}
 
     @ExportToBlocks(comment="Removes a target power, so you can manually set the power where it doesn't update towards the target.",
     parameterLabels={"motor"})
