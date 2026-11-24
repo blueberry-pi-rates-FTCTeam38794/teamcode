@@ -29,7 +29,7 @@ public class TeleOpGeneral {
     public static void runOp(LinearOpMode opmode, Utils utils, Gamepad gamepad1, Gamepad gamepad2) {
         opmode.waitForStart();
         
-        double speed = 1;
+        double speed = 0.5;
         boolean dpadupstate = false; // so the speed doesn't change every time it loops
         boolean dpaddownstate = false;
         boolean squarestate = false;
@@ -86,8 +86,8 @@ public class TeleOpGeneral {
             
             utils.print(String.format("Motors: %.2f, %.2f\nSpeed: %.1f\nIntake is%s running.",
             utils.getPower(false), utils.getPower(true), speed, intakerunning?"":" not"));
-            utils.updatePower(getMotor(false), 0.1);
-            utils.updatePower(getMotor(true), 0.1);
+            utils.updatePower(utils.getMotor(false), 0.1);
+            utils.updatePower(utils.getMotor(true), 0.1);
             opmode.telemetry.update();
         }
     }

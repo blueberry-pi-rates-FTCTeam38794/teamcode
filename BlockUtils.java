@@ -60,4 +60,19 @@ public class BlockUtils extends BlocksOpModeCompanion {
     @ExportToBlocks(comment="Adds text to the driver hub telemetry screen and updates it.",
     parameterLabels={"string"})
     public static void print(String string) {init();utils.print(string);}
+
+    @ExportToBlocks(comment="Sets the target power of a motor. Use this with updatePower to make the speed gradually accelerate.",
+    parameterLabels={"motor", "power"})
+    public static void setTargetPower(DcMotor motor, double power) {init();utils.setTargetPower(motor, power);}
+
+    @ExportToBlocks(comment="Gets the target power of a motor.",
+    parameterLabels={"motor"})
+    public static void getTargetPower(DcMotor motor) {init();utils.getTargetPower(motor);}
+
+    @ExportToBlocks(comment="Removes a target power, so you can manually set the power where it doesn't update towards the target.",
+    parameterLabels={"motor"})
+    public static void removeTargetPower(DcMotor motor) {init();utils.removeTargetPower(motor);}
+
+    @ExportToBlocks(comment="Makes the motor's power value slowly go towards the motor's target power at a given speed. The speed must be positive. This also won't work correctly if you have changed the motor's power without BlockUtils before.")
+    public static void updatePower(DcMotor motor, double speed) {init();utils.updatePower(motor, speed);}
 }
