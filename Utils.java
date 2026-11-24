@@ -67,7 +67,7 @@ public class Utils {
     }
     
     public void setPower(DcMotor motor, double power) {
-        if (!powers.containsKey(motor)) powers.put(motor, 0);
+        if (!powers.containsKey(motor)) powers.put(motor, 0d);
         power = Math.max(-1, Math.min(1, power));
         if (isClose(power, powers.get(motor))) return; 
         motor.setPower(power);

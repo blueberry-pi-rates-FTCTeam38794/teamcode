@@ -39,7 +39,7 @@ public class BlockUtils extends BlocksOpModeCompanion {
     
     @ExportToBlocks(comment="Sets the power of any motor. The first argument must be a motor variable obtained by getMotor.",
     parameterLabels={"motor", "power"})
-    public static void setPower(DcMotor motor, double power) {init();utils.setMotor(motor,power);}
+    public static void setPower(DcMotor motor, double power) {init();utils.setPower(motor,power);}
     
     @ExportToBlocks(comment="Gets the power of the left and right motors. If boolean 'right' is true, it gets the power of the right motor. If it's false, it gets the power of the left motor.",
     parameterLabels={"right"})
