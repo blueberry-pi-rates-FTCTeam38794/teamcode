@@ -60,7 +60,7 @@ public class TeleOpGeneral {
             // reset values
             if (!gamepad1.dpad_up&&dpadupstate) dpadupstate = false;
             if (!gamepad1.dpad_down&&dpaddownstate) dpaddownstate = false;
-            if (!gamepad1.square&&squarestate) squarestate = false;
+            if (!gamepad2.square&&squarestate) squarestate = false;
             
             {
                 double leftPower = 0;
